@@ -5,8 +5,11 @@ function StockManagement() {
   const [selectedProductId, setSelectedProductId] = useState("");
   const [quantityChange, setQuantityChange] = useState("");
 
+  // Render backend base URL
+  const API_BASE = "https://wings-cafe-1-1swa.onrender.com";
+
   useEffect(() => {
-    fetch("/products")
+    fetch(`${API_BASE}/products`)
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.error("Error fetching products:", err));
@@ -35,7 +38,7 @@ function StockManagement() {
       quantity: Number(selectedProduct.quantity) + change,
     };
 
-    await fetch(`/products/${selectedProduct.id}`, {
+    await fetch(`${API_BASE}/products/${selectedProduct.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProduct),
@@ -53,7 +56,7 @@ function StockManagement() {
     <div className="stock-container">
       <h2>Stock Management</h2>
 
-      {/* Compact Inline Form at the Top */}
+      {/* Inline Form */}
       <form
         onSubmit={handleUpdateStock}
         style={{
@@ -100,7 +103,7 @@ function StockManagement() {
         </button>
       </form>
 
-      {/* Stock Table Below Form */}
+      {/* Stock Table */}
       <div className="table-container">
         <table className="product-table">
           <thead>
