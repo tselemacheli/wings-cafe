@@ -5,12 +5,15 @@ function Reports() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Use your Render backend URL
+  const API_BASE = "https://wings-cafe-1-1swa.onrender.com";
+
   useEffect(() => {
-    fetch("/sales")
+    fetch(`${API_BASE}/sales`)
       .then((res) => res.json())
       .then((salesData) => {
         setSales(salesData);
-        return fetch("/products");
+        return fetch(`${API_BASE}/products`);
       })
       .then((res) => res.json())
       .then((productsData) => {
@@ -87,7 +90,6 @@ function Reports() {
     <div className="reports-container">
       <h2 className="page-title">Sales Reports</h2>
 
-      {/* ✅ Summary Cards */}
       <div className="summary-cards" style={{ display: "flex", gap: "1rem" }}>
         <div className="card" style={{ flex: 1 }}>
           <div className="card-body">
@@ -115,7 +117,6 @@ function Reports() {
         </div>
       </div>
 
-      {/* Sales per Product */}
       <div className="report-section">
         <h3>Sales per Product</h3>
         <div className="table-container">
@@ -147,7 +148,6 @@ function Reports() {
         </div>
       </div>
 
-      {/* Sales per Category */}
       <div className="report-section">
         <h3>Sales per Category</h3>
         <div className="table-container">
@@ -179,7 +179,6 @@ function Reports() {
         </div>
       </div>
 
-      {/* Sales History */}
       <div className="report-section">
         <h3>Recent Sales Transactions</h3>
         <div className="table-container">
