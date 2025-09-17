@@ -3,8 +3,11 @@ import React, { useEffect, useState } from "react";
 function Dashboard() {
   const [products, setProducts] = useState([]);
 
+  // Use your Render backend URL
+  const API_BASE = "https://wings-cafe-1-1swa.onrender.com";
+
   useEffect(() => {
-    fetch("/products")
+    fetch(`${API_BASE}/products`)
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.error("Error fetching products:", err));
@@ -27,7 +30,7 @@ function Dashboard() {
       const updatedProduct = products.find((p) => p.id === productId);
       updatedProduct.imageUrl = base64Image;
 
-      await fetch(`/products/${productId}`, {
+      await fetch(`${API_BASE}/products/${productId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedProduct),
@@ -86,7 +89,10 @@ function Dashboard() {
                 <p className="mini-name">{p.name}</p>
                 <p className="mini-desc">{p.description}</p>
                 <p className="mini-price">M{p.price}</p>
-                <p className="mini-status" style={{ color: statusColor, fontWeight: "bold" }}>
+                <p
+                  className="mini-status"
+                  style={{ color: statusColor, fontWeight: "bold" }}
+                >
                   {statusText}
                 </p>
               </div>
