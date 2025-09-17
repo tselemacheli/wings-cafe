@@ -11,11 +11,11 @@ function Products() {
   });
   const [editingId, setEditingId] = useState(null);
 
-  // Use your Render backend URL
-  const API_URL = "https://wings-cafe-1-bufx.onrender.com";
+  // ✅ Base URL for Render backend
+  const API_BASE = "https://wings-cafe-1-bufx.onrender.com";
 
   useEffect(() => {
-    fetch(API_URL)
+    fetch(`${API_BASE}/products`)
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.error("Error fetching products:", err));
@@ -28,7 +28,6 @@ function Products() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!formData.name || !formData.category || !formData.price || !formData.quantity) {
       alert("Please fill all required fields.");
       return;
@@ -38,18 +37,16 @@ function Products() {
 
     try {
       if (editingId) {
-        const res = await fetch(`${API_URL}/${editingId}`, {
+        const res = await fetch(`${API_BASE}/products/${editingId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id: editingId, ...productData }),
         });
         const updated = await res.json();
-        setProducts((prev) =>
-          prev.map((p) => (p.id === editingId ? updated : p))
-        );
+        setProducts((prev) => prev.map((p) => (p.id === editingId ? updated : p)));
         setEditingId(null);
       } else {
-        const res = await fetch(API_URL, {
+        const res = await fetch(`${API_BASE}/products`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(productData),
@@ -66,7 +63,7 @@ function Products() {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+      await fetch(`${API_BASE}/products/${id}`, { method: "DELETE" });
       setProducts((prev) => prev.filter((p) => p.id !== id));
     } catch (err) {
       console.error("Error deleting product:", err);
@@ -88,110 +85,41 @@ function Products() {
     <div className="products-container">
       <h2>Product Management</h2>
 
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          gap: "10px",
-          flexWrap: "wrap",
-          alignItems: "center",
-          marginBottom: "20px",
-        }}
-      >
-        <input
-          type="text"
-          name="name"
-          placeholder="Product Name"
-          value={formData.name}
-          onChange={handleChange}
-          style={{ width: "150px" }}
-          required
-        />
-        <select
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          style={{ width: "120px" }}
-          required
-        >
+      <form onSubmit={handleSubmit} style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+        <input type="text" name="name" placeholder="Product Name" value={formData.name} onChange={handleChange} required />
+        <select name="category" value={formData.category} onChange={handleChange} required>
           <option value="">Category</option>
           <option value="Food">Food</option>
           <option value="Beverages">Beverages</option>
           <option value="Desserts">Desserts</option>
         </select>
-        <input
-          type="text"
-          name="description"
-          placeholder="Description"
-          value={formData.description}
-          onChange={handleChange}
-          style={{ width: "180px" }}
-        />
-        <input
-          type="number"
-          name="price"
-          placeholder="Price"
-          value={formData.price}
-          onChange={handleChange}
-          style={{ width: "80px" }}
-          required
-        />
-        <input
-          type="number"
-          name="quantity"
-          placeholder="Qty"
-          value={formData.quantity}
-          onChange={handleChange}
-          style={{ width: "80px" }}
-          required
-        />
-        <button
-          type="submit"
-          style={{
-            width: "120px",
-            padding: "6px 10px",
-            fontSize: "14px",
-          }}
-          className={editingId ? "btn btn-warning" : "btn btn-success"}
-        >
-          {editingId ? "Update Product" : "Add Product"}
-        </button>
+        <input type="text" name="description" placeholder="Description" value={formData.description} onChange={handleChange} />
+        <input type="number" name="price" placeholder="Price" value={formData.price} onChange={handleChange} required />
+        <input type="number" name="quantity" placeholder="Qty" value={formData.quantity} onChange={handleChange} required />
+        <button type="submit">{editingId ? "Update Product" : "Add Product"}</button>
       </form>
 
-      <div className="table-container">
-        <table className="product-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Actions</th>
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Category</th><th>Description</th><th>Price</th><th>Qty</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          {products.map((p) => (
+            <tr key={p.id}>
+              <td>{p.name}</td>
+              <td>{p.category}</td>
+              <td>{p.description}</td>
+              <td>{p.price}</td>
+              <td>{p.quantity}</td>
+              <td>
+                <button onClick={() => handleEdit(p)}>Edit</button>
+                <button onClick={() => handleDelete(p.id)}>Delete</button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {products.map((p) => (
-              <tr key={p.id}>
-                <td>{p.name}</td>
-                <td>{p.category}</td>
-                <td>{p.description}</td>
-                <td>M{p.price}</td>
-                <td>{p.quantity}</td>
-                <td>
-                  <button onClick={() => handleEdit(p)} className="btn btn-primary">Edit</button>
-                  <button onClick={() => handleDelete(p.id)} className="btn btn-danger">Delete</button>
-                </td>
-              </tr>
-            ))}
-            {products.length === 0 && (
-              <tr>
-                <td colSpan="6" style={{ textAlign: "center" }}>No products available.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+          ))}
+          {products.length === 0 && <tr><td colSpan="6">No products available</td></tr>}
+        </tbody>
+      </table>
     </div>
   );
 }
