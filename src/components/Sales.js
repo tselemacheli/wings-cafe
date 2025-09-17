@@ -6,7 +6,7 @@ function Sales() {
   const [quantityInputs, setQuantityInputs] = useState({});
 
   // Use your Render backend URL
-  const API_BASE = "https://wings-cafe-1-1swa.onrender.com";
+  const API_BASE = "https://wings-cafe-1-bufx.onrender.com";
 
   useEffect(() => {
     fetch(`${API_BASE}/products`)
