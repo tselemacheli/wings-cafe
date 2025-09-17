@@ -12,7 +12,7 @@ function Products() {
   const [editingId, setEditingId] = useState(null);
 
   // Use your Render backend URL
-  const API_URL = "https://wings-cafe-1-1swa.onrender.com/products";
+  const API_URL = "https://wings-cafe-1-bufx.onrender.com";
 
   useEffect(() => {
     fetch(API_URL)
