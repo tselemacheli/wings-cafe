@@ -5,13 +5,16 @@ function Sales() {
   const [sales, setSales] = useState([]);
   const [quantityInputs, setQuantityInputs] = useState({});
 
+  // Use your Render backend URL
+  const API_BASE = "https://wings-cafe-1-1swa.onrender.com";
+
   useEffect(() => {
-    fetch("/products")
+    fetch(`${API_BASE}/products`)
       .then((res) => res.json())
       .then(setProducts)
       .catch(console.error);
 
-    fetch("/sales")
+    fetch(`${API_BASE}/sales`)
       .then((res) => res.json())
       .then(setSales)
       .catch(() => setSales([]));
@@ -35,15 +38,17 @@ function Sales() {
       date: new Date().toISOString(),
     };
 
-    const saleRes = await fetch("/sales", {
+    // Record the sale
+    const saleRes = await fetch(`${API_BASE}/sales`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(saleEntry),
     });
     const savedSale = await saleRes.json();
 
+    // Update product stock
     const updatedProduct = { ...product, quantity: product.quantity - qty };
-    await fetch(`/products/${product.id}`, {
+    await fetch(`${API_BASE}/products/${product.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProduct),
@@ -60,7 +65,7 @@ function Sales() {
     <div className="sales-container">
       <h2 className="page-title">Sales</h2>
 
-      {/* ---------- Product Cards ---------- */}
+      {/* Product Cards */}
       <div className="product-cards">
         {products.length === 0 && <p>No products available.</p>}
 
@@ -102,7 +107,7 @@ function Sales() {
         })}
       </div>
 
-      {/* ---------- Sales Records ---------- */}
+      {/* Sales Records */}
       <div className="sales-records">
         <h3>Sales Records</h3>
         <table className="product-table">
