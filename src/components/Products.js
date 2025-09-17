@@ -11,7 +11,8 @@ function Products() {
   });
   const [editingId, setEditingId] = useState(null);
 
-  const API_URL = "http://localhost:5000/products";
+  // Use your Render backend URL
+  const API_URL = "https://wings-cafe-1-1swa.onrender.com/products";
 
   useEffect(() => {
     fetch(API_URL)
@@ -87,7 +88,6 @@ function Products() {
     <div className="products-container">
       <h2>Product Management</h2>
 
-      {/* Compact Inline Form */}
       <form
         onSubmit={handleSubmit}
         style={{
@@ -158,7 +158,6 @@ function Products() {
         </button>
       </form>
 
-      {/* Product Table */}
       <div className="table-container">
         <table className="product-table">
           <thead>
