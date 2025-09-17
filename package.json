@@ -15,8 +15,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",           // Local development only
-    "build": "react-scripts build",           // Production build (used by Vercel)
+    "start": "react-scripts start",           
+    "build": "react-scripts build",           
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "test": "react-scripts test",
