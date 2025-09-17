@@ -11,11 +11,10 @@ function Products() {
   });
   const [editingId, setEditingId] = useState(null);
 
-  // ✅ Base URL for Render backend
-  const API_BASE = "https://wings-cafe-1-bufx.onrender.com";
+  const API_URL = "https://wings-cafe-1-bufx.onrender.com/products";
 
   useEffect(() => {
-    fetch(`${API_BASE}/products`)
+    fetch(API_URL)
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.error("Error fetching products:", err));
@@ -37,7 +36,7 @@ function Products() {
 
     try {
       if (editingId) {
-        const res = await fetch(`${API_BASE}/products/${editingId}`, {
+        const res = await fetch(`${API_URL}/${editingId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id: editingId, ...productData }),
@@ -46,7 +45,7 @@ function Products() {
         setProducts((prev) => prev.map((p) => (p.id === editingId ? updated : p)));
         setEditingId(null);
       } else {
-        const res = await fetch(`${API_BASE}/products`, {
+        const res = await fetch(API_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(productData),
@@ -63,7 +62,7 @@ function Products() {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`${API_BASE}/products/${id}`, { method: "DELETE" });
+      await fetch(`${API_URL}/${id}`, { method: "DELETE" });
       setProducts((prev) => prev.filter((p) => p.id !== id));
     } catch (err) {
       console.error("Error deleting product:", err);
