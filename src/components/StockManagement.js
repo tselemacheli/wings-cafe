@@ -6,7 +6,7 @@ function StockManagement() {
   const [quantityChange, setQuantityChange] = useState("");
 
   // Render backend base URL
-  const API_BASE = "https://wings-cafe-1-1swa.onrender.com";
+  const API_BASE = "https://wings-cafe-1-bufx.onrender.com";
 
   useEffect(() => {
     fetch(`${API_BASE}/products`)
