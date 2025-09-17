@@ -15,10 +15,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start",           // Local development only
+    "build": "react-scripts build",           // Production build (used by Vercel)
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -40,7 +40,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://wings-cafe-1-1swa.onrender.com",
   "devDependencies": {
     "gh-pages": "^6.3.0"
   }
