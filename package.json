@@ -16,7 +16,7 @@
     "json-server": "^0.17.3"
   },
     "engines": {
-    "node": "18.x"
+    "node": "22.x"
   },
   "scripts": {
     "start": "json-server --watch db.json --port $PORT --host 0.0.0.0",           
